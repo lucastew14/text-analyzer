@@ -1,0 +1,82 @@
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+/**
+ * scans file given from the user and indicates the number of sentences
+ * lines, capitals, word count and long words
+ *
+ * @author Lucas Tewolde
+ * @version 10-17-21
+ */
+public class TextAnalyzer
+{
+      /**
+   * @param word a String parameter representing one word
+   * @return true if the first character of the word is an uppercase
+   * character and false otherwise
+   */
+    //return true if character is capitalized and false otherwise
+    public static boolean wordIsCapitalized(String word) {
+        if (Character.isUpperCase(word.charAt(0))) {
+            return true;
+        }
+        return false;
+    }
+      /**
+       * the following method declares variables to store & increase counters
+       * for things scanned on the file
+       */
+    public static void analyze() throws IOException {
+        Scanner keyboard = new Scanner(System.in);
+       //user's input
+        System.out.print("Lets analyze some text!\nEnter file name:");
+        String fileName = keyboard.nextLine();
+       //variables to store
+        int lines = 0;
+        int words = 0;
+        int longWords = 0;
+        int sentences = 0;
+        int uppercase = 0;
+        File inputFile = new File(fileName);
+        Scanner lineReader = new Scanner(inputFile);
+       // scans file for certain things
+        while (lineReader.hasNextLine()) {
+            lines++;
+            String line = lineReader.nextLine();
+            Scanner parser = new Scanner(line);
+            while (parser.hasNext()) {
+                words++;
+                String word = parser.next();
+               //defining a long word and increasing long words counter
+                if (word.length() > 5) {
+                    longWords++;
+                }
+               //increasing sentence counter
+                if (word.contains(".")) {
+                    sentences++;
+                }
+               //increasing capital words counter
+                if (wordIsCapitalized(word)) {
+                    uppercase++;
+                }
+            }
+        }
+       //print results
+        System.out.println("Number of lines: " + lines);
+        System.out.println("Number of words: " + words);
+        System.out.println("Number of long words: " + longWords);
+        System.out.println("Number of sentences: " + sentences);
+        System.out.println("Number of capitalized words: " + uppercase);
+    }
+    /**
+     * 
+     */
+    public static void main(String[] args) {
+        try {
+            analyze();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }  
+}
